@@ -788,39 +788,6 @@ body {
   color: var(--navy);
 }
 
-.legal-header {
-  border-bottom: 1px solid var(--border);
-  background: #fff;
-}
-
-.legal-header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: min(100% - 32px, 720px);
-  height: 72px;
-  margin: 0 auto;
-}
-
-.legal-brand {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-  text-decoration: none;
-}
-
-.legal-back {
-  font-size: 14px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 180ms ease;
-}
-
-.legal-back:hover {
-  color: var(--accent);
-}
-
 .legal-main {
   width: min(100% - 32px, 720px);
   margin: 0 auto;
