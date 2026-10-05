@@ -29,7 +29,7 @@ export const metadata = {
   metadataBase: new URL(siteUrl),
   title: "Бесплатный аудит сайта — DealerCMS",
   description:
-    "Бесплатный аудит сайта: покажем, где вы теряете обращения и что мешает конверсии.",
+    "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
   applicationName: "DealerCMS Audit",
   keywords: ["DealerCMS", "аудит сайта", "автодилер", "заявки"],
   authors: [{ name: "DealerCMS" }],
@@ -54,7 +54,7 @@ export const metadata = {
     siteName: "DealerCMS",
     title: "Бесплатный аудит сайта — DealerCMS",
     description:
-      "Бесплатный аудит сайта: покажем, где вы теряете обращения и что мешает конверсии.",
+      "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
     images: [
       {
         url: "/og-image.png",
@@ -68,7 +68,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Бесплатный аудит сайта — DealerCMS",
     description:
-      "Бесплатный аудит сайта: покажем, где вы теряете обращения и что мешает конверсии.",
+      "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
     images: ["/og-image.png"],
   },
   appleWebApp: {

@@ -13,14 +13,14 @@ export default function VisualPanel() {
       />
       <div className="visual-overlay" aria-hidden="true" />
       <div className="visual-copy">
-        <p className="visual-badge reveal reveal-badge">Свяжемся с вами</p>
+        <p className="visual-badge reveal reveal-badge">Бесплатный аудит</p>
         <h1 className="visual-title reveal reveal-title">
           Бесплатный аудит
           <br />
           сайта
         </h1>
         <p className="visual-lead reveal reveal-lead">
-          Покажем, где вы теряете обращения и что мешает конверсии.
+          Покажем слабые места сайта и дадим рекомендации по росту заявок.
         </p>
       </div>
     </section>

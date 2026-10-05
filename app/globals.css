@@ -192,9 +192,9 @@ body {
 
 .visual-lead {
   margin: 0;
-  max-width: 30ch;
+  max-width: 28ch;
   font-size: clamp(15px, 1.15vw, 17px);
-  line-height: 1.5;
+  line-height: 1.45;
   color: rgba(255, 255, 255, 0.88);
 }
 
