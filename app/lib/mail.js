@@ -38,20 +38,29 @@ export async function sendAuditEmail({ name, email, phone }) {
     throw new Error("MAIL_TO is empty");
   }
 
+  const emailValue = email || "не указан";
+  const phoneValue = phone || "не указан";
+  const emailHtml = email
+    ? `<a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>`
+    : "не указан";
+  const phoneHtml = phone
+    ? `<a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a>`
+    : "не указан";
+
   const subject = `Заявка на аудит сайта — ${name}`;
   const plaintext = [
     "Новая заявка на бесплатный аудит сайта",
     "",
     `Имя: ${name}`,
-    `Email: ${email}`,
-    `Телефон: ${phone}`,
+    `Email: ${emailValue}`,
+    `Телефон: ${phoneValue}`,
   ].join("\n");
 
   const html = `
     <h2>Новая заявка на бесплатный аудит сайта</h2>
     <p><strong>Имя:</strong> ${escapeHtml(name)}</p>
-    <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-    <p><strong>Телефон:</strong> <a href="tel:${escapeHtml(phone)}">${escapeHtml(phone)}</a></p>
+    <p><strong>Email:</strong> ${emailHtml}</p>
+    <p><strong>Телефон:</strong> ${phoneHtml}</p>
   `;
 
   const payload = {
@@ -59,7 +68,7 @@ export async function sendAuditEmail({ name, email, phone }) {
       recipients,
       from_email: fromEmail,
       from_name: fromName,
-      reply_to: email,
+      ...(email ? { reply_to: email } : {}),
       subject,
       body: {
         html,

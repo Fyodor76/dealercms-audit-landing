@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   ArrowRight,
-  Check,
   Loader2,
   LockKeyhole,
   Mail,
@@ -15,25 +14,23 @@ import { auditFormSchema } from "../lib/audit-form-schema";
 
 const INITIAL = { name: "", email: "", phone: "" };
 
-function Field({
-  icon: Icon,
-  error,
-  children,
-}) {
+function Field({ icon: Icon, error, invalid, children }) {
+  const isInvalid = Boolean(invalid || error);
+
   return (
-    <div className={`field${error ? " is-invalid" : ""}`}>
+    <div className={`field${isInvalid ? " is-invalid" : ""}`}>
       <div className="field-control">
         <Icon className="field-icon" size={18} aria-hidden="true" />
         {children}
       </div>
       <p className={`field-error${error ? " is-visible" : ""}`} aria-live="polite">
-        {error || "\u00a0"}
+        <span>{error || ""}</span>
       </p>
     </div>
   );
 }
 
-export default function AuditForm() {
+export default function AuditForm({ onSuccess }) {
   const [values, setValues] = useState(INITIAL);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
@@ -41,7 +38,13 @@ export default function AuditForm() {
 
   function update(field, value) {
     setValues((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+    setErrors((prev) => {
+      if (field === "email" || field === "phone") {
+        return { ...prev, email: "", phone: "", contact: "" };
+      }
+
+      return { ...prev, [field]: "" };
+    });
   }
 
   async function onSubmit(event) {
@@ -75,23 +78,11 @@ export default function AuditForm() {
         throw new Error(payload.error || "send_failed");
       }
 
-      setStatus("success");
+      onSuccess?.();
     } catch {
       setStatus("idle");
       setFormError("Не удалось отправить заявку. Попробуйте позже.");
     }
-  }
-
-  if (status === "success") {
-    return (
-      <div className="success" role="status">
-        <span className="success-icon">
-          <Check size={28} strokeWidth={2.4} />
-        </span>
-        <h3>Спасибо! Заявка отправлена</h3>
-        <p>Мы свяжемся с вами в ближайшее время.</p>
-      </div>
-    );
   }
 
   return (
@@ -110,30 +101,41 @@ export default function AuditForm() {
         />
       </Field>
 
-      <Field icon={Mail} error={errors.email}>
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          placeholder="Ваш email"
-          value={values.email}
-          aria-invalid={Boolean(errors.email)}
-          onChange={(event) => update("email", event.target.value)}
-        />
-      </Field>
+      <div
+        className={`contact-fields${errors.contact ? " has-contact-error" : ""}`}
+      >
+        <Field icon={Mail} error={errors.email} invalid={errors.contact}>
+          <input
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="Ваш email"
+            value={values.email}
+            aria-invalid={Boolean(errors.email || errors.contact)}
+            onChange={(event) => update("email", event.target.value)}
+          />
+        </Field>
 
-      <Field icon={Phone} error={errors.phone}>
-        <input
-          type="tel"
-          name="phone"
-          autoComplete="tel"
-          inputMode="tel"
-          placeholder="+7 (___) ___-__-__"
-          value={values.phone}
-          aria-invalid={Boolean(errors.phone)}
-          onChange={(event) => update("phone", formatRuPhone(event.target.value))}
-        />
-      </Field>
+        <Field icon={Phone} error={errors.phone} invalid={errors.contact}>
+          <input
+            type="tel"
+            name="phone"
+            autoComplete="tel"
+            inputMode="tel"
+            placeholder="+7 (___) ___-__-__"
+            value={values.phone}
+            aria-invalid={Boolean(errors.phone || errors.contact)}
+            onChange={(event) => update("phone", formatRuPhone(event.target.value))}
+          />
+        </Field>
+
+        <p
+          className={`group-error${errors.contact ? " is-visible" : ""}`}
+          aria-live="polite"
+        >
+          <span>{errors.contact || ""}</span>
+        </p>
+      </div>
 
       <button className="submit" type="submit" disabled={status === "loading"}>
         {status === "loading" ? (
