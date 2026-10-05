@@ -23,10 +23,67 @@ const inter = localFont({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://audit.dealercms.ru";
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Бесплатный аудит сайта — DealerCMS",
   description:
     "Оставьте заявку на бесплатный аудит сайта. Покажем, где сайт теряет заявки и что можно улучшить.",
+  applicationName: "DealerCMS Audit",
+  keywords: ["DealerCMS", "аудит сайта", "автодилер", "заявки"],
+  authors: [{ name: "DealerCMS" }],
+  creator: "DealerCMS",
+  publisher: "DealerCMS",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
+  },
+  manifest: "/site.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: siteUrl,
+    siteName: "DealerCMS",
+    title: "Бесплатный аудит сайта — DealerCMS",
+    description:
+      "Оставьте заявку на бесплатный аудит сайта. Покажем, где сайт теряет заявки и что можно улучшить.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "DealerCMS",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Бесплатный аудит сайта — DealerCMS",
+    description:
+      "Оставьте заявку на бесплатный аудит сайта. Покажем, где сайт теряет заявки и что можно улучшить.",
+    images: ["/og-image.png"],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "DealerCMS Audit",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#1265FF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A2B78" },
+  ],
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }) {
