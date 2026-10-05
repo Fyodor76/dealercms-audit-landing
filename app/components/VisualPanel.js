@@ -15,12 +15,13 @@ export default function VisualPanel() {
       <div className="visual-copy">
         <p className="visual-badge reveal reveal-badge">Бесплатный аудит</p>
         <h1 className="visual-title reveal reveal-title">
-          Бесплатный аудит
-          <br />
-          сайта
+          <span className="visual-title-line">Бесплатный аудит</span>
+          <span className="visual-title-line">сайта</span>
         </h1>
         <p className="visual-lead reveal reveal-lead">
-          Покажем слабые места сайта и дадим рекомендации по росту заявок.
+          Покажем слабые места сайта и дадим
+          <br />
+          рекомендации по росту заявок.
         </p>
       </div>
     </section>
