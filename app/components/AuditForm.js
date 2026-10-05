@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   ArrowRight,
   Loader2,
-  LockKeyhole,
   Mail,
   Phone,
   User,
@@ -12,10 +11,10 @@ import {
 import { formatRuPhone } from "../lib/phone-mask";
 import { auditFormSchema } from "../lib/audit-form-schema";
 
-const INITIAL = { name: "", email: "", phone: "" };
+const INITIAL = { name: "", email: "", phone: "", consent: false };
 
-function Field({ icon: Icon, error, invalid, children }) {
-  const isInvalid = Boolean(invalid || error);
+function Field({ icon: Icon, error, children }) {
+  const isInvalid = Boolean(error);
 
   return (
     <div className={`field${isInvalid ? " is-invalid" : ""}`}>
@@ -38,13 +37,7 @@ export default function AuditForm({ onSuccess }) {
 
   function update(field, value) {
     setValues((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => {
-      if (field === "email" || field === "phone") {
-        return { ...prev, email: "", phone: "", contact: "" };
-      }
-
-      return { ...prev, [field]: "" };
-    });
+    setErrors((prev) => ({ ...prev, [field]: "" }));
   }
 
   async function onSubmit(event) {
@@ -70,7 +63,12 @@ export default function AuditForm({ onSuccess }) {
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify({
+          name: parsed.data.name,
+          email: parsed.data.email,
+          phone: parsed.data.phone,
+          consent: true,
+        }),
       });
 
       if (!response.ok) {
@@ -94,46 +92,58 @@ export default function AuditForm({ onSuccess }) {
           type="text"
           name="name"
           autoComplete="name"
-          placeholder="Как к вам можно обращаться?"
+          placeholder="Ваше имя*"
           value={values.name}
           aria-invalid={Boolean(errors.name)}
           onChange={(event) => update("name", event.target.value)}
         />
       </Field>
 
-      <div
-        className={`contact-fields${errors.contact ? " has-contact-error" : ""}`}
-      >
-        <Field icon={Mail} error={errors.email} invalid={errors.contact}>
-          <input
-            type="email"
-            name="email"
-            autoComplete="email"
-            placeholder="Ваш email"
-            value={values.email}
-            aria-invalid={Boolean(errors.email || errors.contact)}
-            onChange={(event) => update("email", event.target.value)}
-          />
-        </Field>
+      <Field icon={Mail} error={errors.email}>
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          placeholder="Ваш email*"
+          value={values.email}
+          aria-invalid={Boolean(errors.email)}
+          onChange={(event) => update("email", event.target.value)}
+        />
+      </Field>
 
-        <Field icon={Phone} error={errors.phone} invalid={errors.contact}>
-          <input
-            type="tel"
-            name="phone"
-            autoComplete="tel"
-            inputMode="tel"
-            placeholder="+7 (___) ___-__-__"
-            value={values.phone}
-            aria-invalid={Boolean(errors.phone || errors.contact)}
-            onChange={(event) => update("phone", formatRuPhone(event.target.value))}
-          />
-        </Field>
+      <Field icon={Phone} error={errors.phone}>
+        <input
+          type="tel"
+          name="phone"
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder="Телефон"
+          value={values.phone}
+          aria-invalid={Boolean(errors.phone)}
+          onChange={(event) => update("phone", formatRuPhone(event.target.value))}
+        />
+      </Field>
 
+      <div className={`consent${errors.consent ? " is-invalid" : ""}`}>
+        <label className="consent-label">
+          <input
+            className="consent-input"
+            type="checkbox"
+            name="consent"
+            checked={values.consent}
+            aria-invalid={Boolean(errors.consent)}
+            onChange={(event) => update("consent", event.target.checked)}
+          />
+          <span className="consent-box" aria-hidden="true" />
+          <span className="consent-text">
+            Согласие на обработку персональных данных
+          </span>
+        </label>
         <p
-          className={`group-error${errors.contact ? " is-visible" : ""}`}
+          className={`field-error${errors.consent ? " is-visible" : ""}`}
           aria-live="polite"
         >
-          <span>{errors.contact || ""}</span>
+          <span>{errors.consent || ""}</span>
         </p>
       </div>
 
@@ -145,16 +155,11 @@ export default function AuditForm({ onSuccess }) {
           </>
         ) : (
           <>
-            Получить аудит
+            Получить бесплатный аудит
             <ArrowRight size={18} />
           </>
         )}
       </button>
-
-      <p className="hint">
-        <LockKeyhole size={14} />
-        Свяжемся только по вашему запросу.
-      </p>
     </form>
   );
 }

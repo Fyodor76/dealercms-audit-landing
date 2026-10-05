@@ -8,31 +8,20 @@ export const auditFormSchema = z
       .trim()
       .min(2, "Введите имя")
       .max(100, "Имя слишком длинное"),
-    email: z.string().trim(),
+    email: z
+      .string()
+      .trim()
+      .min(1, "Введите email")
+      .email("Введите email"),
     phone: z.string().trim(),
+    consent: z
+      .boolean()
+      .refine((value) => value === true, {
+        message: "Нужно согласие на обработку данных",
+      }),
   })
   .superRefine((data, ctx) => {
-    const hasEmail = data.email.length > 0;
-    const hasPhone = data.phone.length > 0;
-
-    if (!hasEmail && !hasPhone) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["contact"],
-        message: "Укажите email или телефон",
-      });
-      return;
-    }
-
-    if (hasEmail && !z.string().email().safeParse(data.email).success) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["email"],
-        message: "Введите email",
-      });
-    }
-
-    if (hasPhone && !RU_PHONE_MASK_REGEX.test(data.phone)) {
+    if (data.phone.length > 0 && !RU_PHONE_MASK_REGEX.test(data.phone)) {
       ctx.addIssue({
         code: "custom",
         path: ["phone"],

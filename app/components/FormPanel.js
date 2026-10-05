@@ -34,10 +34,11 @@ export default function FormPanel() {
     <section className="form-panel reveal-form" aria-labelledby="form-heading">
       <div className="form-wrap">
         <h2 id="form-heading" className="form-title">
-          Оставьте контакты
+          Бесплатный аудит сайта
         </h2>
         <p className="form-lead">
-          Свяжемся с вами и уточним несколько деталей&nbsp;о&nbsp;сайте.
+          Оставьте контакты. Свяжемся с вами, уточним задачи и согласуем
+          следующие&nbsp;шаги.
         </p>
         <AuditForm onSuccess={() => setSubmitted(true)} />
       </div>

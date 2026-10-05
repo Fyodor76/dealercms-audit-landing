@@ -27,11 +27,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://audit.dealercms.ru"
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Бесплатный аудит сайта — DealerCMS",
+  title: "Бесплатный аудит сайта дилерского центра",
   description:
-    "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
+    "Проверим видимость по моделям, наличию и сервисным запросам. Покажем точки роста и дадим приоритетные рекомендации.",
   applicationName: "DealerCMS Audit",
-  keywords: ["DealerCMS", "аудит сайта", "автодилер", "заявки"],
+  keywords: ["DealerCMS", "аудит сайта", "автодилер", "заявки", "дилерский центр"],
   authors: [{ name: "DealerCMS" }],
   creator: "DealerCMS",
   publisher: "DealerCMS",
@@ -52,9 +52,9 @@ export const metadata = {
     locale: "ru_RU",
     url: siteUrl,
     siteName: "DealerCMS",
-    title: "Бесплатный аудит сайта — DealerCMS",
+    title: "Бесплатный аудит сайта дилерского центра",
     description:
-      "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
+      "Проверим видимость по моделям, наличию и сервисным запросам. Покажем точки роста и дадим приоритетные рекомендации.",
     images: [
       {
         url: "/og-image.png",
@@ -66,9 +66,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Бесплатный аудит сайта — DealerCMS",
+    title: "Бесплатный аудит сайта дилерского центра",
     description:
-      "Бесплатный аудит сайта: покажем слабые места и дадим рекомендации по росту заявок.",
+      "Проверим видимость по моделям, наличию и сервисным запросам. Покажем точки роста и дадим приоритетные рекомендации.",
     images: ["/og-image.png"],
   },
   appleWebApp: {

@@ -5,7 +5,7 @@ export default function VisualPanel() {
     <section className="visual-panel" aria-label="Заявка на аудит">
       <Image
         className="visual-photo"
-        src="/hero-car.png"
+        src="/hero-showroom.png"
         alt=""
         fill
         priority
@@ -13,15 +13,17 @@ export default function VisualPanel() {
       />
       <div className="visual-overlay" aria-hidden="true" />
       <div className="visual-copy">
-        <p className="visual-badge reveal reveal-badge">Бесплатный аудит</p>
+        <p className="visual-badge reveal reveal-badge">
+          Бесплатный аудит для дилеров
+        </p>
         <h1 className="visual-title reveal reveal-title">
-          <span className="visual-title-line">Бесплатный аудит</span>
-          <span className="visual-title-line">сайта</span>
+          <span className="visual-title-line">Узнайте, где ваш сайт</span>
+          <span className="visual-title-line">теряет заявки</span>
         </h1>
         <p className="visual-lead reveal reveal-lead">
-          Покажем слабые места сайта и дадим
-          <br />
-          рекомендации по росту заявок.
+          Проверим видимость по моделям, наличию и сервисным запросам, а также
+          путь посетителя до звонка, заявки или записи на сервис. Покажем точки
+          роста и дадим приоритетные рекомендации.
         </p>
       </div>
     </section>
