@@ -66,9 +66,24 @@ if (!fs.existsSync(publicHero)) {
   fail("Нет public/hero-showroom.png — фото на проде будет 404.");
 }
 
+const appChunksDir = path.join(staticDir, "chunks", "app");
+if (!fs.existsSync(appChunksDir)) {
+  fail("Нет .next/static/chunks/app — page chunks не собраны.");
+}
+
+const pageChunks = fs
+  .readdirSync(appChunksDir)
+  .filter((name) => /^page-[a-f0-9]+\.js$/.test(name));
+if (pageChunks.length === 0) {
+  fail("Нет chunks/app/page-*.js — в браузере будет ChunkLoadError.");
+}
+
 console.log(
-  `[verify-build] OK — build ${buildId}, css files: ${cssFiles.length}, hero ok`,
+  `[verify-build] OK — build ${buildId}, css: ${cssFiles.length}, page chunks: ${pageChunks.length}, hero ok`,
 );
 for (const full of cssFiles) {
   console.log(`  - ${path.relative(root, full)}`);
+}
+for (const name of pageChunks) {
+  console.log(`  - .next/static/chunks/app/${name}`);
 }
