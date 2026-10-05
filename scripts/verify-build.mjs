@@ -4,11 +4,30 @@ import path from "node:path";
 const root = process.cwd();
 const nextDir = path.join(root, ".next");
 const buildIdPath = path.join(nextDir, "BUILD_ID");
-const chunksDir = path.join(nextDir, "static", "chunks");
+const staticDir = path.join(nextDir, "static");
 
 function fail(message) {
   console.error(`\n[verify-build] ${message}\n`);
   process.exit(1);
+}
+
+function collectCss(dir) {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  const results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...collectCss(full));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith(".css")) {
+      results.push(full);
+    }
+  }
+  return results;
 }
 
 if (!fs.existsSync(nextDir)) {
@@ -24,23 +43,21 @@ if (!buildId) {
   fail(".next/BUILD_ID пустой. Пересоберите: npm run build.");
 }
 
-if (!fs.existsSync(chunksDir)) {
-  fail("Нет .next/static/chunks — CSS/JS не собраны. Пересоберите: npm run build.");
+if (!fs.existsSync(staticDir)) {
+  fail("Нет .next/static — CSS/JS не собраны. Пересоберите: npm run build.");
 }
 
-const cssChunks = fs
-  .readdirSync(chunksDir)
-  .filter((name) => name.endsWith(".css"));
-
-if (cssChunks.length === 0) {
-  fail("В .next/static/chunks нет CSS. Стили после старта будут 500/пустые.");
+const cssFiles = collectCss(staticDir);
+if (cssFiles.length === 0) {
+  fail(
+    "В .next/static нет CSS (ни css/, ни chunks/). Стили после старта будут пустые.",
+  );
 }
 
-for (const name of cssChunks) {
-  const full = path.join(chunksDir, name);
+for (const full of cssFiles) {
   const size = fs.statSync(full).size;
   if (size < 100) {
-    fail(`CSS chunk слишком маленький/пустой: ${name} (${size} bytes)`);
+    fail(`CSS слишком маленький/пустой: ${path.relative(root, full)} (${size} bytes)`);
   }
 }
 
@@ -50,5 +67,8 @@ if (!fs.existsSync(publicHero)) {
 }
 
 console.log(
-  `[verify-build] OK — build ${buildId}, css chunks: ${cssChunks.length}, hero ok`,
+  `[verify-build] OK — build ${buildId}, css files: ${cssFiles.length}, hero ok`,
 );
+for (const full of cssFiles) {
+  console.log(`  - ${path.relative(root, full)}`);
+}
