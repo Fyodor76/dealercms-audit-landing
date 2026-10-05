@@ -37,7 +37,7 @@ export default function FormPanel() {
           Оставьте контакты
         </h2>
         <p className="form-lead">
-          Свяжемся с вами и расскажем, где сайт может терять заявки.
+          Свяжемся с вами и уточним несколько деталей о сайте.
         </p>
         <AuditForm onSuccess={() => setSubmitted(true)} />
       </div>

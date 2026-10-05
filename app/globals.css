@@ -188,12 +188,11 @@ body {
   font-weight: 700;
   letter-spacing: -0.038em;
   color: #fff;
-  white-space: nowrap;
 }
 
 .visual-lead {
   margin: 0;
-  max-width: 26ch;
+  max-width: 30ch;
   font-size: clamp(15px, 1.15vw, 17px);
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.88);
@@ -643,7 +642,6 @@ body {
 
   .visual-title {
     font-size: 26px;
-    white-space: nowrap;
   }
 
   .visual-lead {
