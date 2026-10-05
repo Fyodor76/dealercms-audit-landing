@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/verify-build.mjs",
+    "build": "next build --webpack && node scripts/verify-build.mjs",
     "verify-build": "node scripts/verify-build.mjs",
     "prestart": "node scripts/verify-build.mjs",
     "start": "next start",

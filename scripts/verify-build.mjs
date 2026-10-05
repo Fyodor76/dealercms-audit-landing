@@ -4,7 +4,7 @@ import path from "node:path";
 const root = process.cwd();
 const nextDir = path.join(root, ".next");
 const buildIdPath = path.join(nextDir, "BUILD_ID");
-const staticDir = path.join(nextDir, "static");
+const chunksDir = path.join(nextDir, "static", "chunks");
 
 function fail(message) {
   console.error(`\n[verify-build] ${message}\n`);
@@ -24,21 +24,31 @@ if (!buildId) {
   fail(".next/BUILD_ID пустой. Пересоберите: npm run build.");
 }
 
-if (!fs.existsSync(staticDir)) {
-  fail("Нет .next/static — CSS/JS не собраны. Пересоберите: npm run build.");
+if (!fs.existsSync(chunksDir)) {
+  fail("Нет .next/static/chunks — CSS/JS не собраны. Пересоберите: npm run build.");
 }
 
 const cssChunks = fs
-  .readdirSync(path.join(staticDir, "chunks"), { withFileTypes: true })
-  .flatMap((entry) => {
-    if (entry.isFile() && entry.name.endsWith(".css")) {
-      return [entry.name];
-    }
-    return [];
-  });
+  .readdirSync(chunksDir)
+  .filter((name) => name.endsWith(".css"));
 
 if (cssChunks.length === 0) {
   fail("В .next/static/chunks нет CSS. Стили после старта будут 500/пустые.");
 }
 
-console.log(`[verify-build] OK — build ${buildId}, css chunks: ${cssChunks.length}`);
+for (const name of cssChunks) {
+  const full = path.join(chunksDir, name);
+  const size = fs.statSync(full).size;
+  if (size < 100) {
+    fail(`CSS chunk слишком маленький/пустой: ${name} (${size} bytes)`);
+  }
+}
+
+const publicHero = path.join(root, "public", "hero-showroom.png");
+if (!fs.existsSync(publicHero)) {
+  fail("Нет public/hero-showroom.png — фото на проде будет 404.");
+}
+
+console.log(
+  `[verify-build] OK — build ${buildId}, css chunks: ${cssChunks.length}, hero ok`,
+);
