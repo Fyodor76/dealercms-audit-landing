@@ -136,7 +136,24 @@ export default function AuditForm({ onSuccess }) {
           />
           <span className="consent-box" aria-hidden="true" />
           <span className="consent-text">
-            Согласие на обработку персональных данных
+            Я соглашаюсь с условиями{" "}
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+            >
+              Политики обработки персональных данных
+            </a>{" "}
+            и даю{" "}
+            <a
+              href="/soglasie"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(event) => event.stopPropagation()}
+            >
+              Согласие на обработку персональных данных
+            </a>
           </span>
         </label>
         <p
